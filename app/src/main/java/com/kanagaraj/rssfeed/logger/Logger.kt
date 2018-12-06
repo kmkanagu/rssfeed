@@ -13,25 +13,25 @@ object Logger {
         INFO
     }
 
-    fun debug(tag: Any, vararg params: String) {
+    fun debug(tag: Any, vararg params: Any) {
         printLog(tag, LogType.DEBUG, params)
     }
 
-    fun error(tag: Any, vararg params: String) {
+    fun error(tag: Any, vararg params: Any) {
         printLog(tag, LogType.ERROR, params)
     }
 
-    fun info(tag: Any, vararg params: String) {
+    fun info(tag: Any, vararg params: Any) {
         printLog(tag, LogType.INFO, params)
         println()
     }
 
-    fun printLog(tag: Any, logType: LogType, params: Array<out String>) {
+    fun printLog(tag: Any, logType: LogType, params: Array<out Any>) {
 
         val logTag: String = when {
             tag is Class<*> -> tag.simpleName
             tag is String -> tag
-            else -> ""
+            else -> tag.toString()
         }
 
         val args = params.joinToString(" ")

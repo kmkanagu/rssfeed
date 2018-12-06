@@ -13,7 +13,10 @@ import android.view.MenuItem
 import com.kanagaraj.rssfeed.R
 import com.kanagaraj.rssfeed.R.id.*
 import com.kanagaraj.rssfeed.logger.Logger
+import com.kanagaraj.rssfeed.network.RssFeedService
 import dagger.android.support.DaggerAppCompatActivity
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_rss_feed_actiivity.*
 import javax.inject.Inject
@@ -22,6 +25,9 @@ class RssFeedActiivity : DaggerAppCompatActivity(), NavigationView.OnNavigationI
 
     @Inject
     lateinit var context: Context
+
+    @Inject
+    lateinit var rssFeedService: RssFeedService
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,6 +47,16 @@ class RssFeedActiivity : DaggerAppCompatActivity(), NavigationView.OnNavigationI
         toggle.syncState()
 
         nav_view.setNavigationItemSelectedListener(this)
+
+        rssFeedService.getRssFeed("https://timesofindia.indiatimes.com/rssfeedstopstories.cms?x=1")
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        {result ->
+                            for (rss in result.items!!) {Logger.debug(this, rss)}
+                        },
+                        {error -> Logger.error(this, error)}
+                )
     }
 
     override fun onBackPressed() {

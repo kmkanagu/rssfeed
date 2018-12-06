@@ -19,6 +19,7 @@ allprojects {
     repositories {
         google()
         jcenter()
+        maven { url "https://jitpack.io" }
     }
 }
 
@@ -28,4 +29,8 @@ task clean(type: Delete) {
 
 ext {
     daggerVersion = '2.17'
+    retrofitVersion = '2.5.0'
+    rxJavaVersion = '2.2.4'
+    rxAndroidVersion = '2.1.0'
+    retrofitRssFeedConvertorVersion = '0.1.0'
 }
